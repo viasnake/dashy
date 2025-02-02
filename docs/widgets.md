@@ -18,7 +18,7 @@ Dashy has support for displaying dynamic content in the form of widgets. There a
   - [Crypto Wallet Balance](#wallet-balance)
   - [Code Stats](#code-stats)
   - [Mullvad Status](#mullvad-status)
-  - [Email Aliases (AnonAddy)](#anonaddy)
+  - [Email Aliases (addy.io)](#addyio)
   - [Vulnerability Feed](#vulnerability-feed)
   - [Exchange Rates](#exchange-rates)
   - [Public Holidays](#public-holidays)
@@ -66,6 +66,8 @@ Dashy has support for displaying dynamic content in the form of widgets. There a
   - [Gluetun VPN Info](#gluetun-vpn-info)
   - [Drone CI Build](#drone-ci-builds)
   - [Linkding](#linkding)
+  - [Uptime Kuma](#uptime-kuma)
+  - [Tactical RMM](#tactical-rmm)
 - **[System Resource Monitoring](#system-resource-monitoring)**
   - [CPU Usage Current](#current-cpu-usage)
   - [CPU Usage Per Core](#cpu-usage-per-core)
@@ -91,6 +93,7 @@ Dashy has support for displaying dynamic content in the form of widgets. There a
   - [Widget Usage Guide](#widget-usage-guide)
   - [Continuous Updates](#continuous-updates)
   - [Proxying Requests](#proxying-requests)
+  - [Handling Secrets](#handling-secrets)
   - [Setting Timeout](#setting-timeout)
   - [Adding Labels](#adding-labels)
   - [Ignoring Errors](#ignoring-errors)
@@ -285,7 +288,7 @@ Unless image fetched from remote source, no external data request is made.
 
 ### Public IP
 
-Often find yourself searching "What's my IP", just so you can check your VPN is still connected? This widget displays your public IP address, along with ISP name and approx location. Data can be fetched from either [IpApi.co](https://ipapi.co/), [IP-API.com](https://ip-api.com/) or [IpGeolocation.io](https://ipgeolocation.io/).
+Often find yourself searching "What's my IP", just so you can check your VPN is still connected? This widget displays your public IP address, along with ISP name and approx location. Data can be fetched from either [IpApi.co](https://ipapi.co/), [IP-API.com](https://ip-api.com/), [IpGeolocation.io](https://ipgeolocation.io/) or [IP2Location.io](https://ip2location.io/).
 
 <p align="center"><img width="400" src="https://i.ibb.co/vc3c8zN/public-ip.png" /></p>
 
@@ -295,8 +298,8 @@ _All fields are optional._
 
 **Field** | **Type** | **Required** | **Description**
 --- | --- | --- | ---
-**`provider`** | `string` |  _Optional_ | The name of the service to fetch IP address from. Can be either `ipapi.co`, `ip-api` or `ipgeolocation`. Defaults to `ipapi.co`. Note, `ip-api` doesn't work on HTTPS, and if you set to `ipgeolocation` then you must also provide an API key
-**`apiKey`** | `string` |  _Optional_ | Only required if provider is set to `ipgeolocation`. You can get a free API key [here](https://ipgeolocation.io/signup.html)
+**`provider`** | `string` |  _Optional_ | The name of the service to fetch IP address from. Can be either `ipapi.co`, `ip-api`, `ipgeolocation` or `ip2location.io`. Defaults to `ipapi.co`. Note, `ip-api` doesn't work on HTTPS, and if you set to `ipgeolocation` or `ip2location.io` then you must also provide an API key
+**`apiKey`** | `string` |  _Optional_ | Only required if provider is set to `ipgeolocation` or `ip2location.io`. You can get a free IPGeolocation API key [here](https://ipgeolocation.io/signup.html) or a free IP2Location.io API key [here](https://ip2location.io/pricing)
 
 #### Example
 
@@ -319,7 +322,7 @@ Or
 - **Auth**: 🟠 Optional
 - **Price**: 🟢 Free
 - **Host**: Managed Instance Only
-- **Privacy**: _See [IPGeoLocation Privacy Policy](https://ipgeolocation.io/privacy.html) or [IP-API Privacy Policy](https://ip-api.com/docs/legal)_
+- **Privacy**: _See [IPGeoLocation Privacy Policy](https://ipgeolocation.io/privacy.html) or [IP-API Privacy Policy](https://ip-api.com/docs/legal) or [IP2Location.io Privacy Policy](https://ip2location.io/privacy-policy)
 
 ---
 
@@ -571,11 +574,11 @@ _No Options._
 
 ---
 
-### AnonAddy
+### addy.io
 
-[AnonAddy](https://anonaddy.com/) is a free and open source mail forwarding service. Use it to protect your real email address, by using a different alias for each of your online accounts, and have all emails land in your normal inbox(es). Supports custom domains, email replies, PGP-encryption, multiple recipients and more
+[addy.io](https://addy.io/) is a free and open source mail forwarding service. Use it to protect your real email address, by using a different alias for each of your online accounts, and have all emails land in your normal inbox(es). Supports custom domains, email replies, PGP-encryption, multiple recipients and more
 
-This widget display email addresses / aliases from AnonAddy. Click an email address to copy to clipboard, or use the toggle switch to enable/ disable it. Shows usage stats (bandwidth, used aliases etc), as well as total messages received, blocked and sent. Works with both self-hosted and managed instances of AnonAddy.
+This widget display email addresses / aliases from addy.io. Click an email address to copy to clipboard, or use the toggle switch to enable/ disable it. Shows usage stats (bandwidth, used aliases etc), as well as total messages received, blocked and sent. Works with both self-hosted and managed instances of addy.io.
 
 <p align="center"><img width="400" src="https://i.ibb.co/ZhfyRdV/anonaddy.png" /></p>
 
@@ -583,8 +586,8 @@ This widget display email addresses / aliases from AnonAddy. Click an email addr
 
 **Field** | **Type** | **Required** | **Description**
 --- | --- | --- | ---
-**`apiKey`** | `string` |  Required | Your AnonAddy API Key / Personal Access Token. You can generate this under [Account Settings](https://app.anonaddy.com/settings)
-**`hostname`** | `string` |  _Optional_ | If your self-hosting AnonAddy, then supply the host name. By default it will use the public hosted instance
+**`apiKey`** | `string` |  Required | Your addy.io API Key / Personal Access Token. You can generate this under [Account Settings](https://app.addy.io/settings)
+**`hostname`** | `string` |  _Optional_ | If your self-hosting addy.io, then supply the host name. By default it will use the public hosted instance
 **`apiVersion`** | `string` |  _Optional_ | If you're using an API version that is not version `v1`, then specify it here
 **`limit`** | `number` |  _Optional_ | Limit the number of emails shown per page. Defaults to `10`
 **`sortBy`** | `string` |  _Optional_ | Specify the sort order for email addresses. Defaults to `updated_at`. Can be either: `local_part`, `domain`, `email`, `emails_forwarded`, `emails_blocked`, `emails_replied`, `emails_sent`, `created_at`, `updated_at` or `deleted_at`. Precede with a `-` character to reverse order.
@@ -612,7 +615,7 @@ This widget display email addresses / aliases from AnonAddy. Click an email addr
 - **Auth**: 🔴 Required
 - **Price**: 🟠 Free for Self-Hosted / Free Plan available on managed instance or $1/month for premium
 - **Host**: Self-Hosted or Managed
-- **Privacy**: _See [AnonAddy Privacy Policy](https://anonaddy.com/privacy/)_
+- **Privacy**: _See [addy.io Privacy Policy](https://addy.io/privacy/)_
 
 ---
 
@@ -1553,6 +1556,19 @@ Displays the number of queries blocked by [Pi-Hole](https://pi-hole.net/).
     apiKey: xxxxxxxxxxxxxxxxxxxxxxx
 ```
 
+> [!TIP]
+> In order to avoid leaking secret data, both `hostname` and `apiKey` can leverage environment variables. Simply pass the name of the variable, which MUST start with `VUE_APP_`.
+
+```yaml
+- type: pi-hole-stats
+  options:
+    hostname: VUE_APP_pihole_ip
+    apiKey: VUE_APP_pihole_key
+```
+
+> [!IMPORTANT]
+> You will need to restart the server (or the docker image) if adding/editing an env var for this to be refreshed.
+
 #### Info
 
 - **CORS**: 🟢 Enabled
@@ -2113,7 +2129,9 @@ This will show the list of nodes.
       token_name: dashy
       token_uuid: bfb152df-abcd-abcd-abcd-ccb95a472d01
 ```
+
 This will show the list of VMs, with a title and a linked fotter, hiding VM templates.
+
 ```yaml
   - type: proxmox-lists
     useProxy: true 
@@ -2130,11 +2148,7 @@ This will show the list of VMs, with a title and a linked fotter, hiding VM temp
       footer_as_link: true
       hide_templates: 1
 ```
-#### Troubleshooting
-- **404 Error in development mode**: The error might disappear in production mode `yarn start`
-- **500 Error in production mode**: Try adding the certificate authority (CA) certificate of your Proxmox host to Node.js. 
-  - Download the Proxmox CA certificate to your Dashy host.
-  - Export environment variable `NODE_EXTRA_CA_CERTS` and set its value to the path of the downloaded CA certificate. Example:  `export NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/devlab_ca.pem`
+
 #### Info
 
 - **CORS**: 🟠 Proxied
@@ -2142,6 +2156,12 @@ This will show the list of VMs, with a title and a linked fotter, hiding VM temp
 - **Price**: 🟢 Free
 - **Host**: Self-Hosted (see [Proxmox Virtual Environment](https://proxmox.com/en/proxmox-ve))
 - **Privacy**: _See [Proxmox's Privacy Policy](https://proxmox.com/en/privacy-policy)_
+
+#### Troubleshooting
+- **404 Error in development mode**: The error might disappear in production mode `yarn start`
+- **500 Error in production mode**: Try adding the certificate authority (CA) certificate of your Proxmox host to Node.js. 
+  - Download the Proxmox CA certificate to your Dashy host.
+  - Export environment variable `NODE_EXTRA_CA_CERTS` and set its value to the path of the downloaded CA certificate. Example:  `export NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/devlab_ca.pem`
 
 ---
 
@@ -2225,7 +2245,7 @@ Display the last builds from a [Drone CI](https://www.drone.ci) instance. A self
 **Field** | **Type** | **Required** | **Description**
 --- | --- | --- | ---
 **`host`** | `string` |  Required | The hostname of the Drone CI instance.
-**`apiKey`** | `string` |  Required | The API key (https://<your-drone-instance>/account).
+**`apiKey`** | `string` |  Required | The API key (https://[your-drone-instance]/account).
 **`limit`** | `integer` | _Optional_ | Limit the amounts of listed builds.
 **`repo`** | `string` | _Optional_ | Show only builds of the specified repo
 
@@ -2259,7 +2279,7 @@ Linkding is a self-hosted bookmarking service, which has a clean interface and i
 **Field** | **Type** | **Required** | **Description**
 --- | --- | --- | ---
 **`host`** | `string` |  Required | The hostname of the Drone CI instance.
-**`apiKey`** | `string` |  Required | The API key (https://<your-linkding-instance>/settings/integrations).
+**`apiKey`** | `string` |  Required | The API key (https://your-linkding-instance/settings/integrations).
 **`tags`** | `list of string` | _Optional_ | Filter the links by tag.
 
 #### Example
@@ -2282,6 +2302,72 @@ Linkding is a self-hosted bookmarking service, which has a clean interface and i
 - **Price**: 🟢 Free
 - **Host**: Self-Hosted (see [Linkding](https://github.com/sissbruecker/linkding))
 - **Privacy**: _See [Linkding](https://github.com/sissbruecker/linkding)_
+
+---
+
+### Uptime Kuma
+
+[Uptime Kuma](https://github.com/louislam/uptime-kuma) is an easy-to-use self-hosted monitoring tool.
+
+#### Options
+
+| **Field**    | **Type** | **Required** | **Description**                                                          |
+| ------------ | -------- | ------------ | ------------------------------------------------------------------------ |
+| **`url`**    | `string` | Required     | The URL of the Uptime Kuma instance                                      |
+| **`apiKey`** | `string` | Required     | The API key (see https://github.com/louislam/uptime-kuma/wiki/API-Keys). |
+
+#### Example
+
+```yaml
+- type: uptime-kuma
+  useProxy: true
+  options:
+    apiKey: uk2_99H0Yd3I2pPNIRfn0TqBFu4g5q85R1Mh75yZzw6H
+    url: http://192.168.1.106:3691/metrics
+```
+
+#### Info
+
+- **CORS**: 🟢 Enabled
+- **Auth**: 🟢 Required
+- **Price**: 🟢 Free
+- **Host**: Self-Hosted (see [Uptime Kuma](https://github.com/louislam/uptime-kuma) )
+- **Privacy**: _See [Uptime Kuma](https://github.com/louislam/uptime-kuma)_
+
+---
+
+### Tactical RMM
+
+[Tactical RMM](https://github.com/amidaware/tacticalrmm) is a self-hosted remote monitoring & management tool.
+
+<p align="center"><a href="https://ibb.co/NVHWpD1"><img src="https://i.ibb.co/ng5Qfd3/Capture.png" alt="Capture" border="0"></a></p>
+
+
+#### Options
+
+| **Field**    | **Type** | **Required** | **Description**                                                          |
+| ------------ | -------- | ------------ | ------------------------------------------------------------------------ |
+| **`url`**    | `string` | Required     | The status endpoint URL (https://api.example.com/core/status/)           |
+| **`token`**  | `string` | Required     | The MON_TOKEN (see https://docs.tacticalrmm.com/tipsntricks/#monitor-your-trmm-instance-via-the-built-in-monitoring-endpoint). |
+
+#### Example
+
+```yaml
+- type: trmm
+  useProxy: true
+  options:
+    token: PkPVKMzbmXgeQDlJWb0WXYvsIk3JvZyadURud2cSTdMia6hUbQ
+    url: https://api.example.com/core/status/
+```
+
+#### Info
+
+- **CORS**: 🟠 Proxied
+- **Auth**: 🟢 Required
+- **Price**: 🟢 Free
+- **Host**: Self-Hosted (see [Tactical RMM](https://github.com/amidaware/tacticalrmm) )
+- **Privacy**: _See [Tactical RMM](https://github.com/amidaware/tacticalrmm)_
+
 
 ---
 
@@ -2804,6 +2890,32 @@ Alternatively, and more securely, you can set the auth headers on your service t
 Access-Control-Allow-Origin: https://location-of-dashy/
 Vary: Origin
 ```
+
+---
+
+### Handling Secrets
+
+Some widgets require you to pass potentially sensetive info such as API keys. The `conf.yml` is not ideal for this, as it's stored in plaintext.
+Instead, for secrets you should use environmental vairables.
+
+You can do this, by setting the environmental variable name as the value, instead of the actual key, and then setting that env var in your container or local environment.
+
+The key can be named whatever you like, but it must start with `VUE_APP_` (to be picked up by Vue). If you need to update any of these values, a rebuild is required (this can be done under the Config menu in the UI, or by running `yarn build` then restarting the container).
+
+For more infomation about setting and managing your environmental variables, see [Management Docs --> Environmental Variables](/docs/management.md#passing-in-environmental-variables).
+
+For example:
+
+```yaml
+- type: weather
+  options:
+    apiKey: VUE_APP_WEATHER_TOKEN
+    city: London
+    units: metric
+    hideDetails: true
+```
+
+Then, set `VUE_APP_WEATHER_TOKEN='xxx'`
 
 ---
 

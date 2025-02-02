@@ -19,6 +19,7 @@
 - [App Not Starting After Update to 2.0.4](#app-not-starting-after-update-to-204)
 - [Keycloak Redirect Error](#keycloak-redirect-error)
 - [Docker Directory Error](#docker-directory)
+- [Config not Saving on Vercel / Netlify / CDN](#user-content-config-not-saving-on-vercel--netlify--cdn)
 - [Config Not Updating](#config-not-updating)
 - [Config Still not Updating](#config-still-not-updating)
 - [Styles and Assets not Updating](#styles-and-assets-not-updating)
@@ -155,7 +156,7 @@ If you're getting an error about scenarios, then you've likely installed the wro
 Alternatively, as a workaround, you have several options:
 
 - Try using [NPM](https://www.npmjs.com/get-npm) instead: So clone, cd, then run `npm install`, `npm run build` and `npm start`
-- Try using [Docker](https://www.docker.com/get-started) instead, and all of the system setup and dependencies will already be taken care of. So from within the directory, just run `docker build -t lissy93/dashy .` to build, and then use docker start to run the project, e.g: `docker run -it -p 8080:80 lissy93/dashy` (see the [deploying docs](https://github.com/Lissy93/dashy/blob/master/docs/deployment.md#deploy-with-docker) for more info)
+- Try using [Docker](https://www.docker.com/get-started) instead, and all of the system setup and dependencies will already be taken care of. So from within the directory, just run `docker build -t lissy93/dashy .` to build, and then use docker start to run the project, e.g: `docker run -it -p 8080:8080 lissy93/dashy` (see the [deploying docs](https://github.com/Lissy93/dashy/blob/master/docs/deployment.md#deploy-with-docker) for more info)
 
 ---
 
@@ -233,7 +234,7 @@ Version 2.0.4 introduced changes to how the config is read, and the app is build
 
 ```yaml
 volumes:
-- /srv/dashy/conf.yml:/app/public/conf.yml
+- /srv/dashy/conf.yml:/app/user-data/conf.yml
 - /srv/dashy/item-icons:/app/public/item-icons
 ```
 
@@ -272,12 +273,23 @@ See also: #479, #409, #507, #491, #341, #520
 Error response from daemon: OCI runtime create failed: container_linux.go:380:
 starting container process caused: process_linux.go:545: container init caused:
 rootfs_linux.go:76: mounting "/home/ubuntu/my-conf.yml" to rootfs at
-"/app/public/conf.yml" caused: mount through procfd: not a directory:
+"/app/user-data/conf.yml" caused: mount through procfd: not a directory:
 unknown: Are you trying to mount a directory onto a file (or vice-versa)?
 Check if the specified host path exists and is the expected type.
 ```
 
-If you get an error similar to the one above, you are mounting a directory to the config file's location, when a plain file is expected. Create a YAML file, (`touch my-conf.yml`), populate it with a sample config, then pass it as a volume: `-v ./my-local-conf.yml:/app/public/conf.yml`
+If you get an error similar to the one above, you are mounting a directory to the config file's location, when a plain file is expected. Create a YAML file, (`touch my-conf.yml`), populate it with a sample config, then pass it as a volume: `-v ./my-local-conf.yml:/app/user-data/conf.yml`
+
+---
+
+## Config not Saving on Vercel / Netlify / CDN
+
+If you're running Dashy using a static hosting provider (like Vercel), then there is no Node server, and so the save config action will not work via the UI.
+You'll instead need to copy the YAML after making your changes, and paste that into your `conf.yml` directly. If you've connected Vercel to git, then these changes will take effect automatically, once you commit your changes.
+
+If you're running on Netlify, there are some cloud functions which take care of all the server endpoints (like status checking), so these will work as expected.
+
+See also [#1465](https://github.com/Lissy93/dashy/issues/1465)
 
 ---
 
@@ -557,8 +569,7 @@ For example:
 export NODE_OPTIONS=--openssl-legacy-provider
 ```
 
-For more info, see [webpack/webpack#14532](https://github.com/webpack/webpack/issues/14532) and [nodejs/node#40455](https://github.com/nodejs/node/issues/40455). 
-This occurs because [Node 17+](https://medium.com/the-node-js-collection/node-js-17-is-here-8dba1e14e382) no longer supports MD4 as hash function, we're in the process of upgrading Dashy dependencies to all use SHA1 for hashing bundle IDs.
+This will be fixed once [webpack/webpack#17659](https://github.com/webpack/webpack/pull/17659) is merged.
 
 ---
 
