@@ -28,9 +28,9 @@ module.exports = {
   openingMethod: 'newtab',
   /* The page paths for each route within the app for the router */
   routePaths: {
-    home: '/home',
-    minimal: '/minimal',
-    workspace: '/workspace',
+    home: '/home/:config?/',
+    minimal: '/minimal/:config?/',
+    workspace: '/workspace/:config?/',
     about: '/about',
     login: '/login',
     download: '/download',
@@ -44,10 +44,12 @@ module.exports = {
     rebuild: '/config-manager/rebuild',
     systemInfo: '/system-info',
     corsProxy: '/cors-proxy',
+    getUser: '/get-user',
   },
   /* List of built-in themes, to be displayed within the theme-switcher dropdown */
   builtInThemes: [
     'default',
+    'glass',
     'callisto',
     'material',
     'material-dark',
@@ -85,6 +87,9 @@ module.exports = {
     'adventure-basic',
     'basic',
     'tama',
+    'neomorphic',
+    'glass-2',
+    'night-bat',
   ],
   /* Default color options for the theme configurator swatches */
   swatches: [
@@ -112,7 +117,7 @@ module.exports = {
   /* Key names for local storage identifiers */
   localStorageKeys: {
     LANGUAGE: 'language',
-    HIDE_WELCOME_BANNER: 'hideWelcomeHelpers',
+    HIDE_INFO_NOTIFICATION: 'hideWelcomeHelpers',
     LAYOUT_ORIENTATION: 'layoutOrientation',
     COLLAPSE_STATE: 'collapseState',
     ICON_SIZE: 'iconSize',
@@ -120,6 +125,7 @@ module.exports = {
     PRIMARY_THEME: 'primaryTheme',
     CUSTOM_COLORS: 'customColors',
     CONF_SECTIONS: 'confSections',
+    CONF_PAGES: 'confPages',
     CONF_WIDGETS: 'confSections',
     PAGE_INFO: 'pageInfo',
     APP_CONFIG: 'appConfig',
@@ -130,6 +136,7 @@ module.exports = {
     MOST_USED: 'mostUsed',
     LAST_USED: 'lastUsed',
     KEYCLOAK_INFO: 'keycloakInfo',
+    DISABLE_CRITICAL_WARNING: 'disableCriticalWarning',
   },
   /* Key names for cookie identifiers */
   cookieKeys: {
@@ -184,7 +191,7 @@ module.exports = {
     // delay: { show: 380, hide: 0 },
   },
   /* Server location of the Backup & Sync cloud function */
-  backupEndpoint: 'https://dashy-sync-service.as93.net',
+  backupEndpoint: 'https://sync-service.dashy.to',
   /* Available services for fetching favicon icon for user apps */
   faviconApiEndpoints: {
     allesedv: 'https://f1.allesedv.com/128/$URL',
@@ -214,7 +221,7 @@ module.exports = {
   },
   /* API endpoints for widgets that need to fetch external data */
   widgetApiEndpoints: {
-    anonAddy: 'https://app.anonaddy.com',
+    anonAddy: 'https://app.addy.io',
     astronomyPictureOfTheDay: 'https://apod.as93.net/apod',
     blacklistCheck: 'https://api.blacklistchecker.com/check',
     codeStats: 'https://codestats.net/',
@@ -227,7 +234,7 @@ module.exports = {
     ethGasHistory: 'https://ethgas.watch/api/gas/trend',
     exchangeRates: 'https://v6.exchangerate-api.com/v6/',
     flights: 'https://aerodatabox.p.rapidapi.com/flights/airports/icao/',
-    githubTrending: 'https://gh-trending-repos.herokuapp.com/',
+    githubTrending: 'https://trend.doforce.xyz/',
     hackernewsTrending: 'https://hacker-news.firebaseio.com/v0',
     healthChecks: 'https://healthchecks.io/api/v1/checks',
     holidays: 'https://kayaposoft.com/enrico/json/v2.0/?action=getHolidaysForDateRange',
@@ -238,6 +245,7 @@ module.exports = {
     publicIp: 'https://ipapi.co/json',
     publicIp2: 'https://api.ipgeolocation.io/ipgeo',
     publicIp3: 'http://ip-api.com/json',
+    publicIp4: 'https://api.ip2location.io/',
     readMeStats: 'https://github-readme-stats.vercel.app/api',
     rescueTime: 'https://www.rescuetime.com/anapi/data',
     rssToJson: 'https://api.rss2json.com/v1/api.json',
@@ -299,6 +307,7 @@ module.exports = {
     guestAccess: 2,
     notLoggedIn: 3,
     keycloakEnabled: 4,
+    oidcEnabled: 5,
   },
   /* Progressive Web App settings, used by Vue Config */
   pwa: {
@@ -311,6 +320,7 @@ module.exports = {
     iconPaths: {
       favicon64: './web-icons/favicon-64x64.png',
       favicon32: './web-icons/favicon-32x32.png',
+      favicon16: './web-icons/favicon-16x16.png',
       maskIcon: './web-icons/dashy-logo.png',
       msTileImage: './web-icons/dashy-logo.png',
     },
